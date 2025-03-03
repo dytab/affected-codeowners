@@ -68,5 +68,8 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "*"
+  },
+  "volta": {
+    "node": "20.18.3"
   }
 }
