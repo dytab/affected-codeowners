@@ -1,27 +1,57 @@
-import * as core from '@actions/core'
-import { wait } from './wait.js'
+import * as core from '@actions/core';
+import { context } from '@actions/github';
+import { GitHubService } from './github-service.js';
+import { parseFile } from './codeowners/parse-file.js';
+import { findMatchingCodeOwners } from './filename-match.js';
 
-/**
- * The main function for the action.
- *
- * @returns Resolves when the action is complete.
- */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const github = new GitHubService(core.getInput('token'), context);
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const { content: codeownersContent, location: codeownersLocationGuessed } =
+      await github.getCodeownersFile();
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const { lines: codeownersErrors, location: codeownersLocationActual } =
+      await github.getCodeownersErrors();
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    if (
+      codeownersLocationActual &&
+      codeownersLocationGuessed !== codeownersLocationActual
+    ) {
+      throw new Error(
+        `CODEOWNERS guessed file location does not match with actual location: ${codeownersLocationGuessed} !== ${codeownersLocationActual}`
+      );
+    }
+
+    core.setOutput('owners', '');
+
+    if (!codeownersContent) {
+      core.info('No CODEOWNERS file found, skipping codeowners check');
+      return;
+    }
+
+    core.info(`CODEOWNERS file found at ${codeownersLocationGuessed}`);
+
+    const changedFilePaths = await github.listChangedFiles();
+
+    if (changedFilePaths.length === 0) {
+      core.info('No changed files found, skipping codeowners check');
+      return;
+    }
+
+    const ruleset = parseFile(codeownersContent, codeownersErrors);
+
+    if (ruleset.length === 0) {
+      core.info('No codeowners rules found, skipping codeowners check');
+      return;
+    }
+
+    const owners = findMatchingCodeOwners(changedFilePaths, ruleset);
+
+    core.setOutput('grouped-owners', JSON.stringify(owners.grouped));
+    core.setOutput('individual-owners', JSON.stringify(owners.individual));
   } catch (error) {
     // Fail the workflow run if an error occurs
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) core.setFailed(error.message);
   }
 }
