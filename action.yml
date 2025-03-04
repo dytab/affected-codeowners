@@ -1,22 +1,31 @@
 name: Affected Code Owners
 description: GitHub Action to determine which `CODEOWNERS` are affected based on changes in a pull request.
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: heart
-  color: red
+  icon: 'users'
+  color: green
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: Your input description here
-    required: true
-    default: '1000'
+  token:
+    description: 'The GitHub token used to perform git operations'
+    default: ${{ github.token }}
 
-# Define your outputs here.
 outputs:
-  time:
-    description: Your output description here
+  individual-owners:
+    description: >
+      A JSON-formatted string containing a deduplicated array of all affected code owners for the changed files.
+      Example:
+        ["@owner1", "@owner3", "@owner2"]
+
+  grouped-owners:
+    description: >
+      A JSON-formatted string containing a deduplicated array of owner groups, where each group corresponds to a specific rule that matched the changed files.
+      Each group contains an array of owners.
+      Example:
+        [
+          ["@owner1", "@owner3"],
+          ["@owner2", "@owner3"]
+        ]
 
 runs:
   using: node20
