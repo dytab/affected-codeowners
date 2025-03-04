@@ -3,7 +3,7 @@
 import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
-import cleanup from 'rollup-plugin-cleanup';
+import terser from '@rollup/plugin-terser';
 import del from 'rollup-plugin-delete';
 
 const config = {
@@ -18,7 +18,7 @@ const config = {
     typescript(),
     nodeResolve({ preferBuiltins: true }),
     commonjs(),
-    cleanup({ comments: 'none', extensions: ['js', 'ts', 'mjs'] }),
+    terser({ compress: false, mangle: false }),
     del({ targets: 'dist/*' }),
   ],
 };
