@@ -1,20 +1,23 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
-  "version": "0.0.0",
-  "author": "",
+  "name": "affected-codeowners",
+  "description": "GitHub Action to determine which `CODEOWNERS` are affected based on changes in a pull request.",
+  "version": "1.0.0",
+  "author": "dytab",
   "type": "module",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/dytab/affected-codeowners",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/dytab/affected-codeowners.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/dytab/affected-codeowners/issues"
   },
   "keywords": [
-    "actions"
+    "github",
+    "actions",
+    "codeowners",
+    "pull-requests"
   ],
   "exports": {
     ".": "./dist/index.js"

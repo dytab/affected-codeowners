@@ -1,6 +1,5 @@
-name: The name of your action here
-description: Provide a description here
-author: Your name or organization here
+name: Affected Code Owners
+description: GitHub Action to determine which `CODEOWNERS` are affected based on changes in a pull request.
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
