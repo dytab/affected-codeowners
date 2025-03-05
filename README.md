@@ -133,8 +133,8 @@ The action will produce the following outputs:
 
 ## Acknowledgements
 
-This action uses logic inspired by the CLI and Go library [`hmarr/codeowners`](https://github.com/hmarr/codeowners) to parse the `CODEOWNERS` file .  
-Kudos to their excellent work on parsing and handling `CODEOWNERS` files.
+This action uses logic inspired by the CLI and Go library [`hmarr/codeowners`](https://github.com/hmarr/codeowners) to parse and handle `CODEOWNERS` files.  
+Kudos to their excellent work.
 
 # Development
 
