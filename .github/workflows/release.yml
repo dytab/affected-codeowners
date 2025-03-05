@@ -60,7 +60,7 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-tags: 'true'
 
       # Get the version and update the tags to use in the release
       - name: Tag Commit
