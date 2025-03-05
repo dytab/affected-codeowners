@@ -23,7 +23,8 @@ export async function run(): Promise<void> {
       );
     }
 
-    core.setOutput('owners', '');
+    core.setOutput('grouped-owners', '');
+    core.setOutput('individual-owners', '');
 
     if (!codeownersContent) {
       core.info('No CODEOWNERS file found, skipping codeowners check');
