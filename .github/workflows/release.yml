@@ -2,6 +2,7 @@ name: Release
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 # This is required to be able to update tags and create releases
 permissions:

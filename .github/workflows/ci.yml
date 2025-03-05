@@ -62,3 +62,11 @@ jobs:
         run: |
           echo "${{ steps.test-action.outputs.grouped-owners }}"
           echo "${{ steps.test-action.outputs.individual-owners }}"
+
+  release-action:
+    needs: test-typescript
+    permissions:
+      contents: write
+    name: Release
+    uses: ./.github/workflows/release.yml
+    secrets: inherit
