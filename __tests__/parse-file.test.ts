@@ -1,5 +1,3 @@
-// parse-file.test.ts
-
 import { parseFile } from '../src/codeowners/parse-file.js';
 
 describe('parseFile', () => {
