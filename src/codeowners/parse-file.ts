@@ -1,5 +1,5 @@
 import { parseLine } from './parse-line.js';
-import * as core from '@actions/core';
+import { setOutput } from '@actions/core';
 
 export interface CodeOwnerRule {
   pattern: string;
@@ -41,7 +41,7 @@ export const parseFile = (fileContent: string, errors: number[]) => {
       rules.push(rule);
     } catch (error) {
       if (error instanceof Error) {
-        core.setOutput('error', `Line ${lineNo}: ${error.message}`);
+        setOutput('error', `Line ${lineNo}: ${error.message}`);
       }
     }
   }

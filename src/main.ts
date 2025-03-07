@@ -1,4 +1,4 @@
-import * as core from '@actions/core';
+import { getInput, info, setFailed, setOutput } from '@actions/core';
 import { context } from '@actions/github';
 import { GitHubService } from './github-service.js';
 import { parseFile } from './codeowners/parse-file.js';
@@ -6,7 +6,7 @@ import { findMatchingCodeOwners } from './filename-match.js';
 
 export async function run() {
   try {
-    const github = new GitHubService(core.getInput('token'), context);
+    const github = new GitHubService(getInput('token'), context);
 
     const { content: codeownersContent, location: codeownersLocationGuessed } =
       await github.getCodeownersFile();
@@ -23,36 +23,36 @@ export async function run() {
       );
     }
 
-    core.setOutput('grouped-owners', '');
-    core.setOutput('individual-owners', '');
+    setOutput('grouped-owners', '');
+    setOutput('individual-owners', '');
 
     if (!codeownersContent) {
-      core.info('No CODEOWNERS file found, skipping codeowners check');
+      info('No CODEOWNERS file found, skipping codeowners check');
       return;
     }
 
-    core.info(`CODEOWNERS file found at ${codeownersLocationGuessed}`);
+    info(`CODEOWNERS file found at ${codeownersLocationGuessed}`);
 
     const changedFilePaths = await github.listChangedFiles();
 
     if (changedFilePaths.length === 0) {
-      core.info('No changed files found, skipping codeowners check');
+      info('No changed files found, skipping codeowners check');
       return;
     }
 
     const ruleset = parseFile(codeownersContent, codeownersErrors);
 
     if (ruleset.length === 0) {
-      core.info('No codeowners rules found, skipping codeowners check');
+      info('No codeowners rules found, skipping codeowners check');
       return;
     }
 
     const owners = findMatchingCodeOwners(changedFilePaths, ruleset);
 
-    core.setOutput('grouped-owners', JSON.stringify(owners.grouped));
-    core.setOutput('individual-owners', JSON.stringify(owners.individual));
+    setOutput('grouped-owners', JSON.stringify(owners.grouped));
+    setOutput('individual-owners', JSON.stringify(owners.individual));
   } catch (error) {
     // Fail the workflow run if an error occurs
-    if (error instanceof Error) core.setFailed(error.message);
+    if (error instanceof Error) setFailed(error.message);
   }
 }

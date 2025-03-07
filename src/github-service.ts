@@ -1,7 +1,5 @@
 import { context, getOctokit } from '@actions/github';
-
-import { GitHub } from '@actions/github/lib/utils.js';
-import { RequestError } from '@octokit/request-error';
+import type { GitHub } from '@actions/github/lib/utils.js';
 
 export class GitHubService {
   private context: typeof context;
@@ -89,7 +87,11 @@ export class GitHubService {
           };
         }
       } catch (error) {
-        if ((error as RequestError)?.status !== 404) {
+        if (
+          error instanceof Error &&
+          'status' in error &&
+          error.status !== 404
+        ) {
           console.log(error);
         }
       }

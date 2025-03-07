@@ -1,21 +1,18 @@
 import { jest } from '@jest/globals';
-import * as github from '@actions/github';
+import { context, getOctokit } from '@actions/github';
+import { GitHubService } from '../src/github-service.js';
+import { GitHub } from '@actions/github/lib/utils.js';
+
 jest.mock('@actions/github');
 
-import { GitHubService } from '../src/github-service.js';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { GitHub } from '@actions/github/lib/utils';
-import { RequestError } from '@octokit/request-error';
-
 describe('GitHubService', () => {
-  let context: typeof github.context;
+  let ghContext: typeof context;
   beforeAll(() => {
-    context = {
+    ghContext = {
       eventName: 'pull_request',
       repo: { repo: 'example-repo', owner: 'example-owner' },
       payload: { pull_request: { number: 1234, base: { ref: 'main' } } },
-    } as unknown as typeof github.context;
+    } as unknown as typeof context;
   });
   beforeEach(() => {
     jest.resetModules();
@@ -45,10 +42,10 @@ describe('GitHubService', () => {
       };
 
       jest
-        .mocked(github.getOctokit)
+        .mocked(getOctokit)
         .mockReturnValue(response as unknown as InstanceType<typeof GitHub>);
 
-      const gitHubService = new GitHubService('fakegithubtoken', context);
+      const gitHubService = new GitHubService('fakegithubtoken', ghContext);
 
       const output = await gitHubService.listChangedFiles();
 
@@ -78,9 +75,9 @@ describe('GitHubService', () => {
         },
       };
       jest
-        .mocked(github.getOctokit)
+        .mocked(getOctokit)
         .mockReturnValue(response as unknown as InstanceType<typeof GitHub>);
-      const gitHubService = new GitHubService('fakegithubtoken', context);
+      const gitHubService = new GitHubService('fakegithubtoken', ghContext);
 
       const output = await gitHubService.getCodeownersFile();
 
@@ -101,7 +98,7 @@ describe('GitHubService', () => {
               .mockRejectedValueOnce({
                 status: 404,
                 message: 'Not Found',
-              } as RequestError)
+              })
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               .mockResolvedValueOnce({
@@ -120,11 +117,11 @@ describe('GitHubService', () => {
       };
 
       jest
-        .mocked(github.getOctokit)
+        .mocked(getOctokit)
         .mockReturnValueOnce(
           response as unknown as InstanceType<typeof GitHub>
         );
-      const gitHubService = new GitHubService('fakegithubtoken', context);
+      const gitHubService = new GitHubService('fakegithubtoken', ghContext);
 
       const output = await gitHubService.getCodeownersFile();
 
@@ -155,9 +152,9 @@ describe('GitHubService', () => {
       };
 
       jest
-        .mocked(github.getOctokit)
+        .mocked(getOctokit)
         .mockReturnValue(response as unknown as InstanceType<typeof GitHub>);
-      const gitHubService = new GitHubService('fakegithubtoken', context);
+      const gitHubService = new GitHubService('fakegithubtoken', ghContext);
 
       const output = await gitHubService.getCodeownersErrors();
 
@@ -183,9 +180,9 @@ describe('GitHubService', () => {
       };
 
       jest
-        .mocked(github.getOctokit)
+        .mocked(getOctokit)
         .mockReturnValue(response as unknown as InstanceType<typeof GitHub>);
-      const gitHubService = new GitHubService('fakegithubtoken', context);
+      const gitHubService = new GitHubService('fakegithubtoken', ghContext);
 
       const output = await gitHubService.getCodeownersErrors();
 

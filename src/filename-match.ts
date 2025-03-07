@@ -1,5 +1,5 @@
 import { CodeOwnerRule } from './codeowners/parse-file.js';
-import * as core from '@actions/core';
+import { debug } from '@actions/core';
 
 /**
  * A rooted literal pattern starts with a leading `/`, indicating it is anchored
@@ -55,8 +55,8 @@ export const findMatchingCodeOwners = (
   for (const changedFilePath of changedFilePaths) {
     for (const rule of codeOwnerRules) {
       if (filenameMatch(rule, changedFilePath)) {
-        core.debug(`Found matching rule for ${changedFilePath}`);
-        core.debug(JSON.stringify(rule, null, 2));
+        debug(`Found matching rule for ${changedFilePath}`);
+        debug(JSON.stringify(rule, null, 2));
 
         // Store a serialized version of the owners in the set to avoid duplicates
         uniqueGroups.add(JSON.stringify(rule.owners.sort()));
