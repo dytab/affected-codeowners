@@ -2,8 +2,6 @@ import { CodeOwnerRule } from './codeowners/parse-file.js';
 import * as core from '@actions/core';
 
 /**
- * Checks whether a given pattern is a rooted literal pattern.
- *
  * A rooted literal pattern starts with a leading `/`, indicating it is anchored
  * to the root directory. It does not contain wildcards or other dynamic elements.
  */
