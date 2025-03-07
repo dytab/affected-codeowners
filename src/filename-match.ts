@@ -7,14 +7,11 @@ import * as core from '@actions/core';
  * A rooted literal pattern starts with a leading `/`, indicating it is anchored
  * to the root directory. It does not contain wildcards or other dynamic elements.
  */
-export const isRootedLiteralPattern = (pattern: string): boolean => {
+export const isRootedLiteralPattern = (pattern: string) => {
   return !/[*?\\]/.test(pattern) && pattern[0] === '/';
 };
 
-export const matchRootedLiteralPattern = (
-  pattern: string,
-  path: string
-): boolean => {
+export const matchRootedLiteralPattern = (pattern: string, path: string) => {
   // Remove the leading `/` if present, as matching is relative to the root
   const normalizedPattern = pattern[0] === '/' ? pattern.substring(1) : pattern;
 
@@ -41,7 +38,7 @@ export const matchRootedLiteralPattern = (
   );
 };
 
-export const filenameMatch = (rule: CodeOwnerRule, path: string): boolean => {
+export const filenameMatch = (rule: CodeOwnerRule, path: string) => {
   if (isRootedLiteralPattern(rule.pattern)) {
     return matchRootedLiteralPattern(rule.pattern, path);
   }
@@ -52,7 +49,7 @@ export const filenameMatch = (rule: CodeOwnerRule, path: string): boolean => {
 export const findMatchingCodeOwners = (
   changedFilePaths: string[],
   codeOwnerRules: CodeOwnerRule[]
-): { individual: string[]; grouped: string[][] } => {
+) => {
   // Set to store a unique list of owners
   const uniqueGroups = new Set<string>();
   const uniqueOwners = new Set<string>();

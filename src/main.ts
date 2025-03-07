@@ -4,7 +4,7 @@ import { GitHubService } from './github-service.js';
 import { parseFile } from './codeowners/parse-file.js';
 import { findMatchingCodeOwners } from './filename-match.js';
 
-export async function run(): Promise<void> {
+export async function run() {
   try {
     const github = new GitHubService(core.getInput('token'), context);
 

@@ -27,7 +27,7 @@ export class GitHubService {
     }
   }
 
-  async listChangedFiles(): Promise<string[]> {
+  async listChangedFiles() {
     try {
       const filesIterator = this.octokit.paginate.iterator(
         this.octokit.rest.pulls.listFiles,
@@ -98,10 +98,7 @@ export class GitHubService {
     return { content: null, location: null };
   }
 
-  async getCodeownersErrors(): Promise<{
-    lines: number[];
-    location: string | null;
-  }> {
+  async getCodeownersErrors() {
     try {
       const { data } = await this.octokit.rest.repos.codeownersErrors({
         owner: this.owner,

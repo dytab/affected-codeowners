@@ -1,5 +1,5 @@
 // https://github.com/hmarr/codeowners/blob/main/match.go
-export const parsePattern = (pattern: string): RegExp => {
+export const parsePattern = (pattern: string) => {
   // Handle specific edge cases first
   if (pattern.includes('***')) {
     throw new Error('pattern cannot contain three consecutive asterisks');

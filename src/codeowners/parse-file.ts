@@ -8,13 +8,8 @@ export interface CodeOwnerRule {
   owners: string[];
 }
 
-type CodeOwnerRuleset = CodeOwnerRule[];
-
-export const parseFile = (
-  fileContent: string,
-  errors: number[]
-): CodeOwnerRuleset => {
-  const rules: CodeOwnerRuleset = [];
+export const parseFile = (fileContent: string, errors: number[]) => {
+  const rules: CodeOwnerRule[] = [];
   const lines = fileContent.split(/\r?\n/);
 
   let lineNo = 0;
