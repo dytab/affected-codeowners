@@ -1,12 +1,6 @@
 import { parseLine } from './parse-line.js';
 import { setOutput } from '@actions/core';
-
-export interface CodeOwnerRule {
-  pattern: string;
-  regexPattern: RegExp;
-  lineNumber: number;
-  owners: string[];
-}
+import { CodeOwnerRule } from './code-owner-rule.interface.js';
 
 export const parseFile = (fileContent: string, errors: number[]) => {
   const rules: CodeOwnerRule[] = [];

@@ -1,5 +1,5 @@
-import { CodeOwnerRule } from './parse-file.js';
 import { parsePattern } from './parse-pattern.js';
+import { CodeOwnerRule } from './code-owner-rule.interface.js';
 
 export const parseLine = (line: string, lineNumber: number) => {
   const RE_INLINE_COMMENT = /(?<!\\)#/;

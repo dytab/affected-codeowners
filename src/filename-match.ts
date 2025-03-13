@@ -1,5 +1,5 @@
-import { CodeOwnerRule } from './codeowners/parse-file.js';
 import { debug } from '@actions/core';
+import { CodeOwnerRule } from './codeowners/code-owner-rule.interface.js';
 
 /**
  * A rooted literal pattern starts with a leading `/`, indicating it is anchored
