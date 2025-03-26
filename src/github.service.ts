@@ -19,12 +19,6 @@ export class GitHubService {
     this.baseBranch = this.context.payload.pull_request!.base.ref;
   }
 
-  private validateContext() {
-    if (!this.context.payload.pull_request) {
-      throw new Error('This action can only be run on pull requests.');
-    }
-  }
-
   async listChangedFiles() {
     try {
       const filesIterator = this.octokit.paginate.iterator(
@@ -118,6 +112,12 @@ export class GitHubService {
     } catch (error) {
       console.log('Failed to get codeowners errors:', error);
       throw new Error('Failed getCodeownersErrors().');
+    }
+  }
+
+  private validateContext() {
+    if (!this.context.payload.pull_request) {
+      throw new Error('This action can only be run on pull requests.');
     }
   }
 }
