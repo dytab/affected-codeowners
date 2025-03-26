@@ -1,6 +1,6 @@
 import { getInput, info, setFailed, setOutput } from '@actions/core';
 import { context } from '@actions/github';
-import { GitHubService } from './github-service.js';
+import { GitHubService } from './github.service.js';
 import { parseFile } from './codeowners/parse-file.js';
 import { findMatchingCodeOwners } from './filename-match.js';
 

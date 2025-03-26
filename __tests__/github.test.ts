@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { context, getOctokit } from '@actions/github';
-import { GitHubService } from '../src/github-service.js';
+import { GitHubService } from '../src/github.service.js';
 import { GitHub } from '@actions/github/lib/utils.js';
 
 jest.mock('@actions/github');
