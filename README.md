@@ -108,15 +108,7 @@ The action will produce the following outputs:
    All affected code owners, deduplicated:
 
   ```json
-  [
-    "@team-a",
-    "@user1",
-    "@team-c",
-    "@user2",
-    "@user3",
-    "@team-b",
-    "@team-maintainers"
-  ]
+  ["@team-a", "@user1", "@team-c", "@user2", "@user3", "@team-b", "@team-maintainers"]
   ```
 
 - **Grouped Owners**  
