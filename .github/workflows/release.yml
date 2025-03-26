@@ -2,6 +2,12 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      tag_overwrite:
+        description: 'Overwrite existing tag'
+        required: false
+        default: false
+        type: boolean
   workflow_call:
 
 # This is required to be able to update tags and create releases
@@ -68,6 +74,7 @@ jobs:
         uses: issue-ops/semver@v2
         with:
           manifest-path: package.json
+          overwrite: ${{ github.event.inputs.tag_overwrite }}
 
       # Use the version output from the previous step for the release
       # Prepends a 'v' to the beginning (e.g. 'v1.2.3')
