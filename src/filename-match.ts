@@ -48,27 +48,30 @@ export const findMatchingCodeOwners = (
   changedFilePaths: string[],
   codeOwnerRules: CodeOwnerRule[]
 ) => {
-  // Set to store a unique list of owners
-  const uniqueGroups = new Set<string>();
-  const uniqueOwners = new Set<string>();
-
-  for (const changedFilePath of changedFilePaths) {
-    for (const rule of codeOwnerRules) {
-      if (filenameMatch(rule, changedFilePath)) {
-        debug(`Found matching rule for ${changedFilePath}`);
-        debug(JSON.stringify(rule, null, 2));
-
-        // Store a serialized version of the owners in the set to avoid duplicates
-        uniqueGroups.add(JSON.stringify(rule.owners.sort()));
-        rule.owners.forEach((owner) => uniqueOwners.add(owner));
-        break; // Prevents duplicate checks for the same file path
-      }
+  const foundOwners = changedFilePaths.map((path) => {
+    const matchingRule = codeOwnerRules.find((rule) =>
+      filenameMatch(rule, path)
+    );
+    if (matchingRule) {
+      debug(`Found matching rule for ${path}`);
+      debug(JSON.stringify(matchingRule, null, 2));
+      return matchingRule.owners;
     }
-  }
 
-  // Deserialize the owners and store them in an array
+    return [];
+  });
+
+  const uniqueOwners = [...new Set(foundOwners.flatMap((owners) => owners))];
+  const uniqueGroups = [
+    ...new Set(
+      foundOwners
+        .filter((owners) => owners.length > 0)
+        .map((ownerGroup) => JSON.stringify(ownerGroup.sort()))
+    ),
+  ].map((group) => JSON.parse(group));
+
   return {
-    individual: Array.from(uniqueOwners),
-    grouped: Array.from(uniqueGroups, (group) => JSON.parse(group)),
+    individual: uniqueOwners,
+    grouped: uniqueGroups,
   };
 };
