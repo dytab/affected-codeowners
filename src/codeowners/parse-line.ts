@@ -2,14 +2,14 @@ import { parsePattern } from './parse-pattern.js';
 import { CodeOwnerRule } from './code-owner-rule.interface.js';
 
 export const parseLine = (line: string, lineNumber: number) => {
-  const RE_INLINE_COMMENT = /(?<!\\)#/;
-  const RE_UNESCAPED_SPACE = /(?<!\\)\s+/;
+  const inlineComment = /(?<!\\)#/;
+  const unescapedSpace = /(?<!\\)\s+/;
 
-  if (RE_INLINE_COMMENT.test(line)) {
-    line = line.split(RE_INLINE_COMMENT)[0].trim();
+  if (inlineComment.test(line)) {
+    line = line.split(inlineComment)[0].trim();
   }
 
-  const [pattern, ...owners] = line.split(RE_UNESCAPED_SPACE);
+  const [pattern, ...owners] = line.split(unescapedSpace);
 
   const regexPattern = parsePattern(pattern);
 
